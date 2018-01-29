@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.example.jun.myapplication.source.NavigationBar
+        android:id="@+id/nb_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:drawableLeft="@mipmap/ic_add"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="5dp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="  简单跑马灯：谔谔谔谔谔谔谔谔方法咕呱咕呱更多的收到的消息为" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_repayment_detail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="查看还款详情弹窗" />
+
+            <Button
+                android:id="@+id/btn_read_contact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="读取联系人" />
+
+            <Button
+                android:id="@+id/btn_expand_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="查看还款详情列表" />
+
+            <Button
+                android:id="@+id/btn_shopping_cart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="查看购物车详情列表" />
+
+            <Button
+                android:id="@+id/btn_open_webview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="打开WebView传参" />
+
+            <Button
+                android:id="@+id/btn_sidle_popup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="打开侧面弹窗" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

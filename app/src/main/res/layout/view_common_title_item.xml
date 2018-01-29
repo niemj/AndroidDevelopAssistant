@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:background="@drawable/bg_white_selector"
+    android:paddingLeft="@dimen/common_page_margin"
+    android:paddingRight="@dimen/common_page_margin">
+
+    <ImageView
+        android:id="@+id/iv_title_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:contentDescription="@null"
+        android:src="@mipmap/ic_launcher"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/iv_title_icon"
+        android:layout_toRightOf="@+id/iv_title_icon"
+        android:text="我的贷款"
+        android:textColor="@color/grey"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_title_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/iv_title_arrow"
+        android:layout_toStartOf="@+id/iv_title_arrow"
+        android:text="请选择"
+        android:textColor="#bfbfbf"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_title_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/iv_title_arrow"
+        android:layout_toStartOf="@+id/iv_title_arrow"
+        android:text="TextView"
+        android:textColor="@color/gray2"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/iv_title_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:contentDescription="@null"
+        android:src="@mipmap/more"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

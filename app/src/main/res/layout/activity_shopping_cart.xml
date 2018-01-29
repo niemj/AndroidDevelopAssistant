@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/id_rl_head"
+        layout="@layout/header_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/id_rl_foot"
+        android:layout_below="@+id/id_rl_head"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/id_rl_cart_is_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FCFCFC"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/id_rl_cart_is_empty_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@mipmap/ic_shopping_cart_empty" />
+
+            <TextView
+                android:id="@+id/id_rl_cart_is_empty_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/id_rl_cart_is_empty_image"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="购物车为空" />
+        </RelativeLayout>
+
+
+        <ExpandableListView
+            android:id="@+id/id_elv_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cacheColorHint="#00000000"
+            android:divider="#ebebeb"
+            android:dividerHeight="2dp"
+            android:footerDividersEnabled="false"
+            android:groupIndicator="@null"
+            android:visibility="visible"></ExpandableListView>
+
+    </LinearLayout>
+
+
+    <include
+        android:id="@+id/id_rl_foot"
+        layout="@layout/foot_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

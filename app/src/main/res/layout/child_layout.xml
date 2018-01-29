@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#EEEEEE">
+    <!--android:focusable="false" 不占用原有View点击事件-->
+    <CheckBox
+        android:id="@+id/id_cb_select_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:background="@null"
+        android:button="@drawable/selector_check_bg"
+        android:focusable="false" />
+
+    <ImageView
+        android:id="@+id/id_iv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/id_cb_select_child"
+        android:padding="10dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
+        android:id="@+id/id_ll_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/id_iv_logo"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_items_child"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="商品名称" />
+
+        <TextView
+            android:id="@+id/tv_items_child_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="颜色规格描述" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:id="@+id/id_tv_discount_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:singleLine="true"
+                android:text="@string/price"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/id_tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@+id/id_tv_discount_price"
+                android:text="@string/price"
+                android:textSize="10dp" />
+
+            <TextView
+                android:id="@+id/id_tv_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20dp"
+                android:text="@string/good_count"
+                android:textSize="12dp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <!-- android:visibility="gone"-->
+    <LinearLayout
+        android:id="@+id/id_ll_edtoring"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/id_iv_logo"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3">
+
+            <LinearLayout
+                android:id="@+id/ll_change_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/id_iv_reduce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp"
+                    android:src="@mipmap/ic_reduce" />
+
+                <TextView
+                    android:id="@+id/id_tv_count_now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="1"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:id="@+id/id_iv_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="10dp"
+                    android:src="@mipmap/ic_add" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/id_tv_price_now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="6dp"
+                android:layout_toRightOf="@+id/ll_change_num"
+                android:padding="10dp"
+                android:text="@string/price"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/id_tv_des_now"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_change_num"
+                android:layout_gravity="left"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="10dp"
+                android:text="颜色规格描述选择" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/id_tv_goods_star"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginRight="2dp"
+            android:background="@android:color/holo_orange_light"
+            android:gravity="center"
+            android:padding="13dp"
+            android:text="收藏"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/id_tv_goods_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:background="#ff5000"
+            android:gravity="center"
+            android:padding="13dp"
+            android:text="删除"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+
+</RelativeLayout>

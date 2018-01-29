@@ -1,0 +1,18 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <script type="text/javascript">
+
+    function javaCallJs(arg){
+         document.getElementById("content").innerHTML =
+             ("欢迎："+arg );
+    }
+
+
+    </script>
+</head>
+<body>
+<div id="content"> 请在上方输入您的用户名</div>
+<input type="button" value="点击Android被调用" onclick="window.Android.showToast('JS中传来的参数')"/>
+</body>
+</html>

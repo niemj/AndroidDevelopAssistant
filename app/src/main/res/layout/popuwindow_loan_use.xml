@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="#f7f7f8">
+
+        <TextView
+            android:id="@id/pop_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:text="取消"
+            android:textColor="#2d83bd"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:text="贷款用途"
+            android:textColor="#333333"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/tv_ensure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:clickable="true"
+            android:text="完成"
+            android:textColor="#2d83bd"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <com.example.jun.myapplication.widget.pickerview.StringScrollPicker
+        android:id="@+id/picker_load_use"
+        android:layout_width="wrap_content"
+        android:layout_height="215dp"
+        app:spv_max_text_size="18sp"
+        app:spv_min_text_size="14sp"
+        app:spv_visible_item_count="5" />
+
+</LinearLayout>

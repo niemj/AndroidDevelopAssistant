@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.example.jun.myapplication.source.NavigationBar
+        android:id="@+id/nb_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
+
+    <com.example.jun.myapplication.widget.commonview.CommonTitleItemView
+        android:id="@+id/ctiv_loan_use"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        app:arrow="@mipmap/more"
+        app:descriptions="贷款用途"
+        app:place_holder="请选择"
+        app:textcolor="#000000"
+        app:textsize="16"></com.example.jun.myapplication.widget.commonview.CommonTitleItemView>
+
+
+    <com.example.jun.myapplication.widget.commonview.CommonEditText
+        android:id="@+id/cet_contact_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:et_descriptions="联系人姓名"
+        app:et_indicate="@mipmap/contact_image"></com.example.jun.myapplication.widget.commonview.CommonEditText>
+
+    <com.example.jun.myapplication.widget.commonview.CommonEditText
+        android:id="@+id/cet_contact_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:et_descriptions="联系人手机号"></com.example.jun.myapplication.widget.commonview.CommonEditText>
+
+</LinearLayout>
