@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -31,6 +33,9 @@ import com.example.jun.myapplication.bean.event.MessageEvent;
 import com.example.jun.myapplication.source.NavigationBar;
 import com.example.jun.myapplication.util.PermissionUtils;
 import com.example.jun.myapplication.util.PopupPickerHelper;
+import com.example.jun.myapplication.util.ToastUtils;
+import com.example.jun.myapplication.util.Utils;
+import com.mylhyl.acp.AcpListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -80,13 +85,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mNavigationBar.setBackgroundColor(getResources().getColor(R.color.white));
         mNavigationBar.setLeftImageResource(R.mipmap.nav_back);
         mNavigationBar.setLeftClickListener(mNBLeftListener);
-
         mNavigationBar.setTitle("主界面");
 
-        //注册EventBus
-        EventBus.getDefault().register(this);
         mRootView = findViewById(R.id.rootView);
         mPopuUtils = new PopupPickerHelper(this, mRootView);
+        mMessageTV = findViewById(R.id.tv_message);
 
         Button btnRepaymentDetail = findViewById(R.id.btn_repayment_detail);
         Button btnExpandList = findViewById(R.id.btn_expand_list);
@@ -94,7 +97,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         Button btnOpenWebView = findViewById(R.id.btn_open_webview);
         Button btnReadContact = findViewById(R.id.btn_read_contact);
         Button btnSildePopup = findViewById(R.id.btn_sidle_popup);
-        mMessageTV = findViewById(R.id.tv_message);
+        Button btnTest = findViewById(R.id.btn_test);
 
         btnRepaymentDetail.setOnClickListener(this);
         btnExpandList.setOnClickListener(this);
@@ -102,9 +105,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnOpenWebView.setOnClickListener(this);
         btnReadContact.setOnClickListener(this);
         btnSildePopup.setOnClickListener(this);
+        btnTest.setOnClickListener(this);
+
+        //注册EventBus
+        EventBus.getDefault().register(this);
 
         initData();
         initIcon();
+        initAcp();
+
+
+    }
+
+    private void initAcp() {
+        if (Utils.isDeviceRooted()) {
+            ToastUtils.showLong(this, "检测到您的手机已经被Root了！");
+        }
+
+        PermissionUtils.requestPermissions(this, new AcpListener() {
+            @Override
+            public void onGranted() {
+            }
+
+            @Override
+            public void onDenied(List<String> permissions) {
+            }
+        }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
     }
 
     private void initData() {
@@ -158,10 +185,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     }
                 });
                 break;
+            case R.id.btn_test:
+                handler.sendEmptyMessageDelayed(0, 30000);
+                break;
             default:
         }
 
     }
+
+    protected Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Toast.makeText(MainActivity.this, "消息发送成功！！", Toast.LENGTH_SHORT).show();
+        }
+    };
+
 
     /**
      * NavigationBar返回键监听器

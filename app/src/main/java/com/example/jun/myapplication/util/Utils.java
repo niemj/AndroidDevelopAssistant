@@ -41,6 +41,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.example.jun.myapplication.util.crypto.MD5Util;
 
 import org.json.JSONArray;
@@ -74,6 +75,19 @@ import java.util.regex.Pattern;
 
 
 public class Utils {
+
+    public static final int ERROR_PATCH_GOOGLEPLAY_CHANNEL = -6;
+    public static final int ERROR_PATCH_ROM_SPACE = -7;
+    public static final int ERROR_PATCH_MEMORY_LIMIT = -8;
+    public static final int ERROR_PATCH_CRASH_LIMIT = -9;
+    public static final int ERROR_PATCH_CONDITION_NOT_SATISFIED = -10;
+    public static final int ERROR_PATCH_ALREADY_APPLY = -11;
+    public static final int ERROR_PATCH_RETRY_COUNT_LIMIT = -12;
+    public static final String PLATFORM = "platform";
+
+    public static final int MIN_MEMORY_HEAP_SIZE = 45;
+
+    private static boolean background = false;
 
     private static boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
@@ -140,18 +154,6 @@ public class Utils {
         return isCanUse;
     }
 
-    public static final int ERROR_PATCH_GOOGLEPLAY_CHANNEL = -6;
-    public static final int ERROR_PATCH_ROM_SPACE = -7;
-    public static final int ERROR_PATCH_MEMORY_LIMIT = -8;
-    public static final int ERROR_PATCH_CRASH_LIMIT = -9;
-    public static final int ERROR_PATCH_CONDITION_NOT_SATISFIED = -10;
-    public static final int ERROR_PATCH_ALREADY_APPLY = -11;
-    public static final int ERROR_PATCH_RETRY_COUNT_LIMIT = -12;
-    public static final String PLATFORM = "platform";
-
-    public static final int MIN_MEMORY_HEAP_SIZE = 45;
-
-    private static boolean background = false;
 
     /**
      * sendMessage: 一步发消息
@@ -211,20 +213,7 @@ public class Utils {
      * 获取屏幕大小 0:width 1:height
      */
     public static String getScreenSize(Context context, int type) {
-        // Display dis = ((Activity) context).getWindowManager()
-        // .getDefaultDisplay();
-        // int screenWidth = dis.getWidth();
-        // int screenHeight = dis.getHeight();
-        // int size=0;
-        // switch (type) {
-        // case 0:
-        // size=screenWidth;
-        // break;
-        //
-        // case 1:
-        // size=screenHeight;
-        // break;
-        // }
+
         DisplayMetrics dm = new DisplayMetrics();
         dm = context.getApplicationContext().getResources().getDisplayMetrics();
         int screenWidth = dm.widthPixels;// 屏幕宽（像素，如：480px）
@@ -2631,6 +2620,53 @@ public class Utils {
             return "";
         }
         return item.getText().toString();
+    }
+
+    /**
+     * 检测设备是否root
+     *
+     * @return
+     */
+    public static boolean isDeviceRooted() {
+        if (checkRootMethod1()) {
+            return true;
+        }
+        if (checkRootMethod2()) {
+            return true;
+        }
+        if (checkRootMethod3()) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean checkRootMethod1() {
+        String buildTags = android.os.Build.TAGS;
+
+        if (buildTags != null && buildTags.contains("test-keys")) {
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean checkRootMethod2() {
+        try {
+            File file = new File("/system/app/Superuser.apk");
+            if (file.exists()) {
+                return true;
+            }
+        } catch (Exception e) {
+        }
+
+        return false;
+    }
+
+    private static boolean checkRootMethod3() {
+        if (new ExecShell().executeCommand(ExecShell.SHELL_CMD.check_su_binary) != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
