@@ -1,7 +1,6 @@
 package com.example.jun.myapplication.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -10,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.jun.myapplication.R;
 import com.example.jun.myapplication.adapter.ShoppingCartAdapter;
 import com.example.jun.myapplication.bean.GoodsBean;
@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * @author JUN
  */
-public class ShoppingCartActivity extends AppCompatActivity {
+public class ShoppingCartActivity extends BaseActivity {
 
     //定义父列表项List数据集合
     List<Map<String, Object>> parentMapList = new ArrayList<Map<String, Object>>();
@@ -43,9 +43,11 @@ public class ShoppingCartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shopping_cart);
+    }
 
-        initCartData();
+    @Override
+    public void initView() {
+        setContentView(R.layout.activity_shopping_cart);
 
         expandableListView = (ExpandableListView) findViewById(R.id.id_elv_listview);
 
@@ -169,6 +171,30 @@ public class ShoppingCartActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void initData() {
+        for (int i = 0; i < 20; i++) {
+            String store = "旗舰店";
+            if (i % 2 == 0) {
+                store = "专营店";
+            }
+            //提供父列表的数据
+            Map<String, Object> parentMap = new HashMap<String, Object>();
+            parentMap.put("parentName", new StoreBean("" + i, store + i, false, false));
+            parentMapList.add(parentMap);
+
+            //提供当前父列的子列数据
+            List<Map<String, Object>> childMapList = new ArrayList<Map<String, Object>>();
+            for (int j = 0; j < 3; j++) {
+                Map<String, Object> childMap = new HashMap<String, Object>();
+                GoodsBean goodsBean = new GoodsBean(i + "_" + j, store + i + "下的商品" + j, "url", "均码，红色", 150, 120, 1, GoodsBean.STATUS_VALID, false, false);
+                childMap.put("childName", goodsBean);
+                childMapList.add(childMap);
+            }
+            childMapList_list.add(childMapList);
+        }
+    }
+
     private void setupViewsShow(boolean isHasGoods) {
         if (isHasGoods) {
             expandableListView.setVisibility(View.VISIBLE);
@@ -198,26 +224,5 @@ public class ShoppingCartActivity extends AppCompatActivity {
         }
     }
 
-    private void initCartData() {
-        for (int i = 0; i < 20; i++) {
-            String store = "旗舰店";
-            if (i % 2 == 0) {
-                store = "专营店";
-            }
-            //提供父列表的数据
-            Map<String, Object> parentMap = new HashMap<String, Object>();
-            parentMap.put("parentName", new StoreBean("" + i, store + i, false, false));
-            parentMapList.add(parentMap);
 
-            //提供当前父列的子列数据
-            List<Map<String, Object>> childMapList = new ArrayList<Map<String, Object>>();
-            for (int j = 0; j < 3; j++) {
-                Map<String, Object> childMap = new HashMap<String, Object>();
-                GoodsBean goodsBean = new GoodsBean(i + "_" + j, store + i + "下的商品" + j, "url", "均码，红色", 150, 120, 1, GoodsBean.STATUS_VALID, false, false);
-                childMap.put("childName", goodsBean);
-                childMapList.add(childMap);
-            }
-            childMapList_list.add(childMapList);
-        }
-    }
 }

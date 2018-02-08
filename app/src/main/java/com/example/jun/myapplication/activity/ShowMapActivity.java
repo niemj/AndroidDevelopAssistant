@@ -2,9 +2,9 @@ package com.example.jun.myapplication.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +21,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
-import com.example.jun.myapplication.*;
+import com.example.jun.myapplication.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,24 +31,39 @@ public class ShowMapActivity extends BaseActivity {
 
 
     public LocationClient mLocationClient;
-
     private TextView positionText;
-
     private BaiduMap baiduMap;
-
     private boolean isFirstLocate = true;
-
     private MapView mapView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // 在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
+        mapView.onPause();
+    }
+
+    @Override
+    public void initView() {
 
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(new MyLocationListener());
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_show_map);
+
         mapView = (MapView) findViewById(R.id.baidu_map);
         baiduMap = mapView.getMap();
         baiduMap.setMyLocationEnabled(true);
@@ -75,21 +90,11 @@ public class ShowMapActivity extends BaseActivity {
         } else {
             requestLocation();
         }
-
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        // 在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
-        mapView.onResume();
-    }
+    public void initData() {
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // 在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
-        mapView.onPause();
     }
 
     @Override

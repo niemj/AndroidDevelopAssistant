@@ -34,6 +34,12 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+    }
+
+    @Override
+    public void initView() {
         setContentView(R.layout.activity_person_info);
 
         mLoanUseCTIV = findViewById(R.id.ctiv_loan_use);
@@ -45,10 +51,10 @@ public class PersonInfoActivity extends BaseActivity implements View.OnClickList
 
         mContactIV.setOnClickListener(this);
         mLoanUseCTIV.setOnClickListener(this);
-        initData();
     }
 
-    private void initData() {
+    @Override
+    public void initData() {
 
         mLoanUseList = new ArrayList<>();
         mLoanUseList.add("旅游");

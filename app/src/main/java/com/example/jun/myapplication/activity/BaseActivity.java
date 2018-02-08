@@ -17,14 +17,17 @@ import com.example.jun.myapplication.util.ToastUtils;
  * @date 2017/8/29
  */
 @SuppressLint("Registered")
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d("BaseActivity", getClass().getSimpleName());
+        initData();
+        initView();
         ActivityCollector.addActivity(this);
         ViewServer.get(this).addWindow(this);
     }
+
 
     @Override
     protected void onDestroy() {
@@ -55,4 +58,8 @@ public class BaseActivity extends AppCompatActivity {
             ToastUtils.showLong(this, "您的应用怀疑被虚假界面所劫持，请注意不要泄露您的账户、密码！");
         }
     }
+
+    public abstract void initView();
+
+    public abstract void initData();
 }

@@ -25,8 +25,13 @@ public class ExpandListViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void initView() {
+
         setContentView(R.layout.activity_expand_list_view);
-        initData();
 
         mExpandableListView = (FixedListView) findViewById(R.id.expand_list);
         ExpandListViewAdapter adapter = new ExpandListViewAdapter(mRepaymentPlanList);
@@ -50,11 +55,27 @@ public class ExpandListViewActivity extends BaseActivity {
                 expandOnlyOne(groupPosition);
             }
         });
+    }
 
+    @Override
+    public void initData() {
+
+        mRepaymentPlanList = new ArrayList<>();
+        for (int i = 1; i < 40; i++) {
+            final List<SampleChildBean> childList = new ArrayList<>(i);
+            childList.add(new SampleChildBean("含本金38.39，利息6.72"));
+
+            SampleGroupBean sampleGroupBean = new SampleGroupBean(childList, String.valueOf(i));
+            sampleGroupBean.setDate("2017-10-21");
+            sampleGroupBean.setMoney("45.71");
+
+            mRepaymentPlanList.add(sampleGroupBean);
+        }
     }
 
     /**
      * 每次展开一个分组后，关闭其他的分组
+     *
      * @param expandedPosition
      * @return
      */
@@ -69,17 +90,5 @@ public class ExpandListViewActivity extends BaseActivity {
         return result;
     }
 
-    private void initData() {
-        mRepaymentPlanList = new ArrayList<>();
-        for (int i = 1; i < 40; i++) {
-            final List<SampleChildBean> childList = new ArrayList<>(i);
-            childList.add(new SampleChildBean("含本金38.39，利息6.72"));
 
-            SampleGroupBean sampleGroupBean = new SampleGroupBean(childList, String.valueOf(i));
-            sampleGroupBean.setDate("2017-10-21");
-            sampleGroupBean.setMoney("45.71");
-
-            mRepaymentPlanList.add(sampleGroupBean);
-        }
-    }
 }

@@ -15,12 +15,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,8 +38,6 @@ import com.mylhyl.acp.AcpListener;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,6 +54,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private ComponentName mDefault;
     private ComponentName mAlias;
+    private ComponentName mAlias1;
     private PackageManager mPm;
 
     public static boolean isForeground = false;
@@ -65,12 +62,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        registerMessageReceiver();  // used for receive msg
-        /**
-         * 隐藏状态栏和ActionBar
-         */
+
+        //隐藏状态栏和ActionBar
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -80,7 +74,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+        registerMessageReceiver();  // used for receive msg
 
+        //注册EventBus
+        EventBus.getDefault().register(this);
+
+        initIcon();
+        initAcp();
+
+    }
+
+    @Override
+    public void initView() {
+        setContentView(R.layout.activity_main);
         mNavigationBar = (NavigationBar) findViewById(R.id.nb_title);
         mNavigationBar.setBackgroundColor(getResources().getColor(R.color.white));
         mNavigationBar.setLeftImageResource(R.mipmap.nav_back);
@@ -107,35 +113,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnSildePopup.setOnClickListener(this);
         btnTest.setOnClickListener(this);
 
-        //注册EventBus
-        EventBus.getDefault().register(this);
-
-        initData();
-        initIcon();
-        initAcp();
-
-
     }
 
-    private void initAcp() {
-        if (Utils.isDeviceRooted()) {
-            ToastUtils.showLong(this, "检测到您的手机已经被Root了！");
+
+    /**
+     * NavigationBar返回键监听器
+     */
+    private View.OnClickListener mNBLeftListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mPopuUtils.showBackPopuWindow();
         }
+    };
 
-        PermissionUtils.requestPermissions(this, new AcpListener() {
-            @Override
-            public void onGranted() {
-            }
-
-            @Override
-            public void onDenied(List<String> permissions) {
-            }
-        }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-    }
-
-    private void initData() {
-
+    @Override
+    public void initData() {
         mRepaymentPlanList = new ArrayList<>();
         mList = new ArrayList<>();
         mList.add("3期");
@@ -156,8 +148,89 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             mRepaymentPlanList.add(sampleGroupBean);
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        isForeground = true;
+        super.onResume();
+    }
+
+
+    @Override
+    protected void onPause() {
+        isForeground = false;
+        super.onPause();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        //注销EventBus
+        EventBus.getDefault().unregister(this);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+
+    /**
+     * 动态更换桌面图标
+     */
+    private void initIcon() {
+        mDefault = new ComponentName(getBaseContext(), "com.example.jun.myapplication.activity.MainActivityDefault");
+        mAlias = new ComponentName(getBaseContext(), "com.example.jun.myapplication.activity.MainActivityAlias");
+        mAlias1 = new ComponentName(getBaseContext(), "com.example.jun.myapplication.activity.MainActivityAlias1");
+        mPm = getApplicationContext().getPackageManager();
+
+        Calendar calendar = Calendar.getInstance();
+        Date now = calendar.getTime();
+
+        calendar.set(2018, 2, 2);//活动开始时间2018-03-02
+        Date yearTime = calendar.getTime();
+
+        calendar.set(2018, 2, 7);
+        Date girlStart = calendar.getTime();
+
+        calendar.set(2018, 2, 8);
+        Date girlEnd = calendar.getTime();
+
+        if (now.compareTo(yearTime) <= 0) {
+            disableComponent(mDefault);
+            enableComponent(mAlias);
+            disableComponent(mAlias1);
+
+        } else if (now.compareTo(girlStart) >= 0 && now.compareTo(girlEnd) <= 0) {
+            disableComponent(mDefault);
+            disableComponent(mAlias);
+            enableComponent(mAlias1);
+
+        } else {
+            enableComponent(mDefault);
+            disableComponent(mAlias);
+            disableComponent(mAlias1);
+        }
+    }
+
+    /**
+     * 申请相关权限
+     */
+    private void initAcp() {
+        if (Utils.isDeviceRooted()) {
+            ToastUtils.showLong(this, "检测到您的手机已经被Root了！");
+        }
+
+        PermissionUtils.requestPermissions(this, new AcpListener() {
+            @Override
+            public void onGranted() {
+            }
+
+            @Override
+            public void onDenied(List<String> permissions) {
+            }
+        }, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
     }
+
 
     @Override
     public void onClick(View view) {
@@ -186,7 +259,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 });
                 break;
             case R.id.btn_test:
-                handler.sendEmptyMessageDelayed(0, 30000);
+                handler.sendEmptyMessageDelayed(0, 3000);
                 break;
             default:
         }
@@ -201,85 +274,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     };
 
-
-    /**
-     * NavigationBar返回键监听器
-     */
-    private View.OnClickListener mNBLeftListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mPopuUtils.showBackPopuWindow();
-        }
-    };
-
-
-    @Override
-    protected void onResume() {
-        isForeground = true;
-        super.onResume();
-    }
-
-
-    @Override
-    protected void onPause() {
-        isForeground = false;
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        //注销EventBus
-        EventBus.getDefault().unregister(this);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-        super.onDestroy();
-    }
-
-
-    private void initIcon() {
-        mDefault = new ComponentName(getBaseContext(), "com.example.jun.myapplication.activity.MainActivityDefault");
-        mAlias = new ComponentName(getBaseContext(), "com.example.jun.myapplication.activity.MainActivityAlias");
-        mPm = getApplicationContext().getPackageManager();
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Calendar currentCalendar = Calendar.getInstance();
-        Calendar startCalendar = Calendar.getInstance();
-        Calendar endCalendar = Calendar.getInstance();
-
-        try {
-            currentCalendar.setTime(formatter.parse(formatter.format(new Date())));
-            startCalendar.setTime(formatter.parse("2018-1-29 00:00:00"));
-            endCalendar.setTime(formatter.parse("2018-1-29 23:59:00"));
-            int result1 = currentCalendar.compareTo(startCalendar);
-            int result2 = currentCalendar.compareTo(endCalendar);
-            Log.d("comparedate", "result1:" + result1 + "\n" + "result2:" + result2);
-
-            if (result1 >= 0 && result2 <= 0) {
-                if (mPm.getComponentEnabledSetting(mDefault) == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT || mPm.getComponentEnabledSetting(mDefault) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-                    changeIcon2Ali();
-                    Log.d("comparedate", "换成新图标！");
-                }
-            } else {
-                if (mPm.getComponentEnabledSetting(mAlias) == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT || mPm.getComponentEnabledSetting(mAlias) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-                    changeIcon2Def();
-                    Log.d("comparedate", "换回旧图标！");
-                }
-            }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void changeIcon2Ali() {
-        disableComponent(mDefault);
-        enableComponent(mAlias);
-    }
-
-    private void changeIcon2Def() {
-        enableComponent(mDefault);
-        disableComponent(mAlias);
-    }
 
     private void enableComponent(ComponentName componentName) {
         mPm.setComponentEnabledSetting(componentName,
@@ -339,30 +333,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
        /* if (null != mMessageTV) {
             mMessageTV.setText("接收到的消息为：" + msg);
         }*/
-    }
-
-
-    private void requestCallPermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // 没有权限
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {
-                    //如果没勾选“不再询问”，向用户发起权限请求
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 0);
-                } else {
-                    //之前点击了“不再询问”，无法再次弹出权限申请框。
-                    //可以给Toast提示，或者Dialog反馈给用户，引导去开启相应权限
-                    // 去应用信息
-                    PermissionUtils.GoToSetting(MainActivity.this);
-                }
-            } else {
-                // 有权限,接着你要干的活
-                Toast.makeText(MainActivity.this, "获取权限成功！", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            // 6.0之前的系统，因为无法获取权限的状态，直接执行需要权限的操作
-            Toast.makeText(MainActivity.this, "6.0之前的系统！", Toast.LENGTH_SHORT).show();
-        }
     }
 
 

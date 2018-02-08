@@ -70,6 +70,16 @@ public class WebViewActivity extends BaseActivity {
         webView = null;
     }
 
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
     private class JSInterface {
         //JS需要调用的方法
         @JavascriptInterface

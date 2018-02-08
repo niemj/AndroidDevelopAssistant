@@ -2669,5 +2669,28 @@ public class Utils {
         }
     }
 
+    /**
+     * 比较当前时间和指定日期，格式为yyyyMMdd
+     *
+     * @param datetime
+     * @return
+     */
+
+    public static boolean compareTime(String datetime) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar currentCalendar = Calendar.getInstance();
+            currentCalendar.setTime(formatter.parse(formatter.format(new Date())));
+            Calendar expiredCalendar = Calendar.getInstance();
+            expiredCalendar.setTime(formatter.parse(datetime));
+
+            return currentCalendar.compareTo(expiredCalendar) >= 0;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }
